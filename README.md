@@ -18,7 +18,7 @@ The additional package dependencies can be installed within R, as follows:
 > install.packages(c('readr','plumber','argparser','dplyr'))
 ```
 
-csv2api can be installed by simpy cloning this repo.
+csv2api can be installed by simply cloning this repo.
 
 Assuming everything worked without incident, you're nearly ready to enter the fascinating world of APIs.
 
@@ -58,9 +58,9 @@ There are three main query types you can use against your new API.
 Try the following:
 * http://localhost:8000/ - the returns the entire CSV file as a JSON object
 * http://localhost:8000/random/ - this returns a single, randomly selected record from the file.
-* http://localhost:8000/langauge=='R'&score>90 - This uses a simple query language to return a subset of results
+* http://localhost:8000/language=='R'&score>90 - This uses a simple query language to return a subset of results
 
-For any R users familiar with dply, you'll already be familiar with the query language as it's essentially passed straight through to dplyr's `filter()`.
+For any R users familiar with dplyr, you'll already be familiar with the query language as it's essentially passed straight through to dplyr's `filter()`.
 
 If you want to load a CSV file that has no header row, use `-n` and if you want to change the port from 8000, you'll need `-p`
 
