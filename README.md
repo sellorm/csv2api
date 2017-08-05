@@ -4,6 +4,8 @@
 
 Ever wanted to access as CSV file as a web API? Probably not, but it's fun, so try it anyway!
 
+csv2api is a really simple command line utility that does just that. It's a really short script, written in R, that reads in a CSV file and then serves that up as an API, using the awesome [plumber package](https://github.com/trestletech/plumber).
+
 ## Installation
 
 csv2api is written in R and several add-on packages.
