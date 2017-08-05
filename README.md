@@ -87,3 +87,7 @@ http://localhost:8000/language=='R'&score>90
 ## Security
 
 A quick note about security - Please don't use this script in a manner that exposes it to the open internet. This tool was built to be a bit of fun, and to allow people to quickly turn their own data into a simple API that they can then play with for educational purposes. No effort has been put into security testing and hardening. It is not designed for use in production settings. Use at your own risk etc.
+
+## License
+
+MIT © [Mark Sellors](https://github.com/sellorm)
