@@ -1,0 +1,74 @@
+#!/usr/bin/env Rscript
+
+library(readr)
+library(plumber)
+library(argparser)
+suppressMessages(
+  library(dplyr)
+)
+
+# args <- commandArgs(trailingOnly = TRUE)
+
+# Create a parser
+p <- arg_parser("Serve a CSV file via a JSON based API")
+
+# Add command line arguments
+p <- add_argument(p, "filename", help="input CSV filename")
+p <- add_argument(p, "--noheader", help="no headers", default=FALSE, flag = TRUE)
+p <- add_argument(p, "--port", help="specify port number", default=8000)
+
+# Parse the command line arguments
+argv <- parse_args(p)
+
+# flips true/false for the noheader flag, so it makes more sense
+if (argv$noheader == FALSE){
+  header <- TRUE
+} else {
+  header <- FALSE
+}
+
+cat("Loading   :",argv$filename,"\n")
+if (file.exists(argv$filename)){
+  inputData <- read_csv(argv$filename,col_names = header)
+} else {
+  cat("Error: no input file specified\n")
+  q("yes", 1)
+}
+
+router <- plumber::plumber$new()
+
+# all
+endAllExpr <- expression(
+  function(){
+    return(inputData)
+  }
+)
+
+router$addEndpoint(verbs=c("GET", "POST"), path="/",
+                   expr = endAllExpr)
+
+# filter
+endFilterExpr <- expression(
+  function(query){
+    cat("Input     : ",query,"\n")
+    query <- URLdecode(query)
+    cat("Converted : ",query,"\n")
+    filteredData <- inputData %>% filter_(query)
+    return(filteredData)
+  }
+)
+
+router$addEndpoint(verbs=c("GET", "POST"), path="/<query>",
+                   expr = endFilterExpr)
+
+# random
+endRandomExpr <- expression(
+  function(){
+    randomData <- inputData[sample(nrow(inputData), 1),]
+    return(randomData)
+  }
+)
+
+router$addEndpoint(verbs=c("GET", "POST"), path="/random/",
+                   expr = endRandomExpr)
+router$run(port=argv$port)

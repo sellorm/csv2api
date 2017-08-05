@@ -1,0 +1,19 @@
+#!/usr/bin/env Rscript
+
+library(httr)
+library(jsonlite)
+library(argparser)
+
+p <- arg_parser("A simple command line client for a csv2api API")
+p <- add_argument(p, "query", help="the csv2api query to use")
+
+argv <- parse_args(p)
+
+
+url <- 'http://localhost:8000/'
+
+full_url <- paste0(url, argv$query)
+
+cat(full_url,"\n")
+r <- GET(full_url)
+data.frame(fromJSON(content(r, "text", encoding = "UTF-8")))
